@@ -51,18 +51,44 @@ async def box(server:str, minutes:int):
 # 30 MINUTES
 @tasks.loop(seconds=30) 
 async def tour() -> str | None:
+    channel = bot.get_channel(1379909757904883762)
     min:int = 0
     data = datetime.now()
     fuso_horario = pytz.timezone("Europe/Madrid")
     agora = data.astimezone(fuso_horario).time()
     for k, v in horarios.items():
         hora = datetime.strptime(k, "%H:%M")
+
         before30 = timedelta(minutes=-30)
-        h = hora + before30
-        if agora.hour == h.hour and agora.minute == h.minute:
-            channel = bot.get_channel(1379909757904883762)
+        h30 = hora + before30
+
+        before20 = timedelta(minutes=-20)
+        h20 = hora + before20
+
+        before10 = timedelta(minutes=-10)
+        h10 = hora + before10        
+
+        before5 = timedelta(minutes=-5)
+        h5 = hora + before5
+
+        if agora.hour == h30.hour and agora.minute == h30.minute:
             min = 30
             await channel.send(content="@everyone", embed=await box(server=v, minutes=min))
             print(Fore.LIGHTGREEN_EX + "Success" + Fore.RESET)
 
-bot.run("333")
+        elif agora.hour == h20.hour and agora.minute == h20.minute:
+            min = 20
+            await channel.send(content="@everyone", embed=await box(server=v, minutes=min))
+            print(Fore.LIGHTGREEN_EX + "Success" + Fore.RESET)
+
+        elif agora.hour == h10.hour and agora.minute == h10.minute:
+            min = 10
+            await channel.send(content="@everyone", embed=await box(server=v, minutes=min))
+            print(Fore.LIGHTGREEN_EX + "Success" + Fore.RESET)
+
+        elif agora.hour == h5.hour and agora.minute == h5.minute:
+            min = 5
+            await channel.send(content="@everyone", embed=await box(server=v, minutes=min))
+            print(Fore.LIGHTGREEN_EX + "Success" + Fore.RESET)
+
+bot.run(<YOUR_TOKEN>)
